@@ -1,0 +1,22 @@
+{% extends 'base_site.html' %}
+
+{% block maincontent %}
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{form.as_p}} 
+     <!-- # this is from the dictionary key in views.py for the required form -->
+    <!-- {{ form.non_field_errors }} -->
+
+ <div class="form-group my-2">
+    
+    <label> Reporter:</label>
+    <input class="form-control" type="text" readonly value="{{ request.user }}">
+</div>
+<!--
+<div class="form-group my-2">
+    {{ form.description.errors }}
+    <label>Description:</label>
+    {{ form.description }}
+</div> -->
+    <input type="submit" name="Submit" class="btn btn-primary" value="Submit" id="">
+</form>
+{% endblock maincontent %}
