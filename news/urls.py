@@ -7,12 +7,14 @@ from news.views import (
     demo_for_ajax,
     news_home,
     news_detail_view,
+    search_view,
 )
 
 app_name = "news"
 urlpatterns = [
     path("news-list/", news_list, name="news"),
     path("", news_home, name="newshome"),
+    path("search/", search_view, name="searchnews"),
     path("news-add/", news_add_view, name="news_add"),
     path("news-edit/<int:newsid>/", news_edit_view, name="news_edit"),
     path("news-delete/", news_delete_view, name="news_delete"),

@@ -5,7 +5,7 @@ from django.urls import reverse
 from news.forms import NewsForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
 
 # Create your views here.
 @login_required
@@ -74,3 +74,27 @@ def news_delete_view(request):
 def demo_for_ajax(request):
     data = {"name": "Ram", "address": "Kathmandu"}
     return JsonResponse(data, safe=False)
+
+
+def search_view(request):
+    if request.method == "POST":
+        searchtext = request.POST["searchtext"]
+        print(searchtext)
+        searchresult = News.objects.filter(title__contains=searchtext)
+        paginator = Paginator(searchresult, per_page=4)
+        page_number = request.GET.get("page")
+        try:
+            page_obj = paginator.get_page(
+                page_number
+            )  # returns the desired page object
+        except PageNotAnInteger:
+            # if page_number is not an integer then assign the first page
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # if page is empty then return last page
+            page_obj = paginator.page(paginator.num_pages)
+        return render(
+            request, "search.html", {"searchtext": searchtext, "form": page_obj}
+        )
+    else:
+        return render(request, "search.html")

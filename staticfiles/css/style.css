@@ -28,11 +28,11 @@
     text-decoration: none;
   }
   
-  h2,
+  /* h2,
   h4 a {
     text-transform: uppercase;
   }
-  
+   */
   a:hover {
     text-decoration: none;
   }
