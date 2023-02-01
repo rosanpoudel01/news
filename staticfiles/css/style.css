@@ -77,11 +77,11 @@
     margin-top: 30px;
     font-weight: 600;
   }
-  .publish_date{
+  .reporter{
     display: block;
     text-decoration: none;
     align-content: center;
-    margin-left: 200px;
+    margin-left: 25px;
   }
   /* Media Queries */
   

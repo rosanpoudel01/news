@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from news.models import News
+from news.models import News, Category
 from django.urls import reverse
 from news.forms import NewsForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
@@ -14,9 +14,13 @@ def news_list(request):
     return render(request, "list_news.html", {"form": news})
 
 
+def get_category():
+    return Category.objects.all().order_by("-id")
+
+
 def news_home(request):
     news = News.objects.all().order_by("-id")
-
+    categories = Category.objects.all().order_by("-id")
     paginator = Paginator(news, per_page=4)
     page_number = request.GET.get("page")
     try:
@@ -27,12 +31,12 @@ def news_home(request):
     except EmptyPage:
         # if page is empty then return last page
         page_obj = paginator.page(paginator.num_pages)
-    return render(request, "newshome.html", {"form": page_obj})
+    return render(request, "newshome.html", {"form": page_obj, "cat": categories})
 
 
 def news_detail_view(request, newsid):
     news = get_object_or_404(News, id=newsid)
-    return render(request, "news_detail.html", {"form": news})
+    return render(request, "news_detail.html", {"form": news, "cat": get_category()})
 
 
 @login_required
@@ -98,3 +102,13 @@ def search_view(request):
         )
     else:
         return render(request, "search.html")
+
+
+def news_by_category_view(request, categoryid):
+    # categories = Category.objects.filter(id=categoryid)
+    news = News.objects.filter(category=categoryid)
+    context = {
+        "news": news,
+        "cat": get_category(),
+    }
+    return render(request, "cat_news.html", context)

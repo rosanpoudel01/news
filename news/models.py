@@ -1,4 +1,5 @@
 from django.db import models
+from useraccount.models import User
 
 
 class TimeStamp(models.Model):
@@ -28,7 +29,11 @@ class News(TimeStamp):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, blank=True
     )
-    reporter = models.CharField(max_length=255)
+    reporter = models.ForeignKey(
+        User,
+        default="Anonymous",
+        on_delete=models.SET_DEFAULT,
+    )
 
     class Meta:
         verbose_name = "News"
